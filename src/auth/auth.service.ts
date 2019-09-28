@@ -2,10 +2,9 @@ import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from "bcrypt"
 import { users, roles } from '../users/users.entity';
 import { JwtService } from '@nestjs/jwt';
-import { HttpException } from "@nestjs/common"
+// import { HttpException } from "@nestjs/common"
 import { ConfigService } from '../config/config.service';
 import * as jwtr from "jwt-then";
-import { validLogin } from '../help//login.valid';
 
 
 
@@ -21,12 +20,6 @@ export class AuthService{
   }
 
   async validateUser(email: string, password: string): Promise<any> {
-
-    let loginValid = await validLogin(email, password)
-    if(loginValid.stateValid !== 2 ){
-      throw new HttpException(loginValid.errorObj, 404);
-    }
-    
     const user: any = await this.AUTH_REPOSITORY.findOne<users>({ where: { email: email } })
     if (!user) {
       return null
@@ -58,7 +51,7 @@ export class AuthService{
       firstname: user.firstname,
       secondname: user.secondname,
       email: user.email,
-      isAdmin: permissions[0]
+      isAdmin: permissions
     };
     const token = await jwtr.sign(userLogin, 'secret')
      return res.status(200).send({

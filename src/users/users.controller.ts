@@ -3,7 +3,6 @@ import { UsersService } from './users.service';
 import { Request, Response } from 'express'
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
-import * as Request1 from "@nestjs/common"
 
 
 @Controller('users')
@@ -49,5 +48,4 @@ export class UsersController {
     registerNewUser(@Req() req: Request, @Res() res: Response): any {
         return this.usersService.registerNewUser(req, res);
     }
-
 }

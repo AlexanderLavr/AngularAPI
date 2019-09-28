@@ -7,9 +7,15 @@ import { AuthGuard } from '@nestjs/passport';
 export class BooksController {
     constructor(private readonly booksService: BooksService) { }
     @UseGuards(AuthGuard('jwt'))
+    @Get('/:page')
+    findAllAdmin(@Req() req: Request, @Res() res: Response): any {
+        return this.booksService.findAllAdmin(req, res);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
     @Get()
-    findAll(): any {
-        return this.booksService.findAll();
+    findAllUser(@Req() req: Request, @Res() res: Response): any {
+        return this.booksService.findAllUser(req, res);
     }
 
     @UseGuards(AuthGuard('jwt'))
@@ -25,10 +31,22 @@ export class BooksController {
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @Delete('/deleteBooks')
+    @Delete('/:id')
     deleteBook(@Req() req: Request, @Res() res: Response): any {
         return this.booksService.deleteBook(req, res);
     }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('sort/:title/:page')
+    sortBooks(@Req() req: Request, @Res() res: Response): any {
+        return this.booksService.sortBooks(req, res);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('search/:title')
+    searchBooks(@Req() req: Request, @Res() res: Response): any {
+        return this.booksService.searchBooks(req, res);
+    } 
 
     @UseGuards(AuthGuard('jwt'))
     @Post()
